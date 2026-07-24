@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  /* Arimo es metric-compatible con Arial y visualmente muy cercana a
+     Helvetica; es la alternativa gratuita mas parecida que hay para web. */
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.giulia-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 40px 63px 80px;
+  overflow: hidden;
+}
+
+/* "Giulia" background wordmark — Helvetica/Arimo Regular, #F2F2F2 */
+.watermark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-weight: 400;
+  font-size: clamp(120px, 18vw, 320px);
+  line-height: 1;
+  color: #f2f2f2;
+  user-select: none;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.top-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.tag {
+  font-weight: 700;
+  font-size: 18px;
+  color: #a5a5a5;
+}
+
+/* Zone where the 6 project cards float freely */
+.float-zone {
+  position: relative;
+  z-index: 2;
+  height: calc(100vh - 220px);
+  min-height: 520px;
+}
+
+.float-wrap {
+  position: absolute;
+  animation-name: float;
+  animation-duration: var(--dur, 14s);
+  animation-delay: var(--delay, 0s);
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes float {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  25%  { transform: translate(var(--dx), calc(var(--dy) * -1)) rotate(0.6deg); }
+  50%  { transform: translate(calc(var(--dx) * -1), var(--dy)) rotate(-0.6deg); }
+  75%  { transform: translate(calc(var(--dx) * 0.6), calc(var(--dy) * 0.6)) rotate(0.4deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.card-tile {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #d9d9d9;
+  cursor: pointer;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.card-tile.size-lg { width: 320px; height: 260px; }
+.card-tile.size-md { width: 240px; height: 200px; }
+.card-tile.size-sm { width: 180px; height: 160px; }
+
+/* When hovered: the card stops floating (parent animation is paused) and
+   grows in place, while its video starts playing (handled in JS). */
+.float-wrap:has(.card-tile.is-hovered) {
+  animation-play-state: paused;
+}
+
+.card-tile.is-hovered {
+  transform: scale(1.35);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
+}
+
+.card-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+}
+
+.card-tile:hover .card-overlay {
+  opacity: 1;
+}
+
+.card-overlay span {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.about-link {
+  position: absolute;
+  bottom: 46px;
+  right: 106px;
+  z-index: 2;
+  font-weight: 700;
+  font-size: 24px;
+  color: #a5a5a5;
+  text-decoration: none;
+}
+
+.about-link:hover {
+  color: #7a7a7a;
+}
+
+@media (max-width: 768px) {
+  .giulia-page {
+    padding: 24px 20px 60px;
+  }
+  .float-zone {
+    height: auto;
+    min-height: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .float-wrap {
+    position: relative;
+    top: auto !important;
+    left: auto !important;
+    animation: none;
+  }
+  .card-tile.size-lg,
+  .card-tile.size-md,
+  .card-tile.size-sm {
+    width: 100%;
+    height: 220px;
+  }
+  .about-link {
+    right: 20px;
+  }
+}
