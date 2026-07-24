@@ -19,20 +19,25 @@ body {
   overflow: hidden;
 }
 
-/* "Giulia" background wordmark — Helvetica/Arimo Regular, #F2F2F2 */
-.watermark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-weight: 400;
-  font-size: clamp(120px, 18vw, 320px);
-  line-height: 1;
-  color: #f2f2f2;
-  user-select: none;
+/* "Giulia" background wordmark — Helvetica/Arimo Regular */
+.watermark-layer {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 0;
   pointer-events: none;
+}
+
+.watermark {
+  font-weight: 500;
+  font-size: clamp(140px, 20vw, 360px);
+  line-height: 1;
+  /* slightly darker than the original F2F2F2 so it holds its own against
+     the white background without competing with the cards */
+  color: #e6e6e6;
+  user-select: none;
 }
 
 .top-bar {
@@ -62,15 +67,19 @@ body {
   animation-name: float;
   animation-duration: var(--dur, 14s);
   animation-delay: var(--delay, 0s);
-  animation-timing-function: ease-in-out;
+  animation-timing-function: var(--ease, ease-in-out);
   animation-iteration-count: infinite;
 }
 
+/* More stops + irregular spacing than a simple back-and-forth so the drift
+   reads as organic instead of a robotic round trip. */
 @keyframes float {
   0%   { transform: translate(0, 0) rotate(0deg); }
-  25%  { transform: translate(var(--dx), calc(var(--dy) * -1)) rotate(0.6deg); }
-  50%  { transform: translate(calc(var(--dx) * -1), var(--dy)) rotate(-0.6deg); }
-  75%  { transform: translate(calc(var(--dx) * 0.6), calc(var(--dy) * 0.6)) rotate(0.4deg); }
+  18%  { transform: translate(calc(var(--dx) * 0.7), calc(var(--dy) * -0.9)) rotate(0.8deg); }
+  36%  { transform: translate(var(--dx), calc(var(--dy) * 0.3)) rotate(-0.4deg); }
+  54%  { transform: translate(calc(var(--dx) * -0.4), var(--dy)) rotate(0.6deg); }
+  72%  { transform: translate(calc(var(--dx) * -1), calc(var(--dy) * -0.5)) rotate(-0.8deg); }
+  88%  { transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.6)) rotate(0.3deg); }
   100% { transform: translate(0, 0) rotate(0deg); }
 }
 

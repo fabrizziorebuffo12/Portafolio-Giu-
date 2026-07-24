@@ -9,7 +9,8 @@ const projects = [
     id: 1,
     size: 'lg',
     title: 'Sala minimalista',
-    top: 12, left: 8, dx: 26, dy: 18, dur: 13, delay: 0,
+    top: 8, left: 6, dx: 30, dy: 20, dur: 17, delay: 0, ease: 'ease-in-out',
+    color: '#c9c2ea',
     poster: 'https://picsum.photos/seed/giulia-living/900/700',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
   },
@@ -17,7 +18,8 @@ const projects = [
     id: 2,
     size: 'md',
     title: 'Cocina contemporánea',
-    top: 6, left: 55, dx: 20, dy: 24, dur: 15, delay: 1.2,
+    top: 14, left: 41, dx: 22, dy: 26, dur: 14, delay: 1.4, ease: 'cubic-bezier(.45,0,.55,1)',
+    color: '#f0c9c9',
     poster: 'https://picsum.photos/seed/giulia-kitchen/700/600',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
   },
@@ -25,7 +27,8 @@ const projects = [
     id: 3,
     size: 'sm',
     title: 'Habitación principal',
-    top: 40, left: 3, dx: 18, dy: 22, dur: 11, delay: 0.6,
+    top: 6, left: 76, dx: 18, dy: 24, dur: 12, delay: 0.7, ease: 'ease-in-out',
+    color: '#cfe8f2',
     poster: 'https://picsum.photos/seed/giulia-bedroom/700/600',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
   },
@@ -33,23 +36,26 @@ const projects = [
     id: 4,
     size: 'md',
     title: 'Comedor',
-    top: 45, left: 60, dx: 24, dy: 16, dur: 14, delay: 2,
+    top: 58, left: 9, dx: 24, dy: 18, dur: 16, delay: 2.1, ease: 'cubic-bezier(.37,0,.63,1)',
+    color: '#f5e8ad',
     poster: 'https://picsum.photos/seed/giulia-dining/900/700',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
   },
   {
     id: 5,
-    size: 'sm',
+    size: 'lg',
     title: 'Oficina en casa',
-    top: 72, left: 20, dx: 16, dy: 20, dur: 12, delay: 0.9,
+    top: 60, left: 40, dx: 20, dy: 22, dur: 18, delay: 0.9, ease: 'ease-in-out',
+    color: '#a9d2c4',
     poster: 'https://picsum.photos/seed/giulia-office/700/600',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
   },
   {
     id: 6,
-    size: 'md',
+    size: 'sm',
     title: 'Terraza',
-    top: 68, left: 62, dx: 22, dy: 18, dur: 16, delay: 1.6,
+    top: 56, left: 78, dx: 16, dy: 20, dur: 13, delay: 1.7, ease: 'cubic-bezier(.45,0,.55,1)',
+    color: '#e6d6ee',
     poster: 'https://picsum.photos/seed/giulia-terrace/500/500',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
   },
@@ -86,11 +92,13 @@ function ProjectCard({ p, isHovered, onEnter, onLeave }) {
         '--dy': `${p.dy}px`,
         '--dur': `${p.dur}s`,
         '--delay': `${p.delay}s`,
+        '--ease': p.ease,
         zIndex: isHovered ? 5 : 1,
       }}
     >
       <div
         className={`card-tile size-${p.size} ${isHovered ? 'is-hovered' : ''}`}
+        style={{ backgroundColor: p.color }}
         onMouseEnter={handleEnter}
         onMouseLeave={handleLeave}
       >
@@ -117,7 +125,9 @@ function App() {
 
   return (
     <div className="giulia-page">
-      <span className="watermark">Giulia</span>
+      <div className="watermark-layer">
+        <span className="watermark">Giulia</span>
+      </div>
 
       <header className="top-bar">
         <span className="tag">xx2026</span>
