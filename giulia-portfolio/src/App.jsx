@@ -9,25 +9,25 @@ const projects = [
     id: 1,
     size: 'lg',
     title: 'Sala minimalista',
-    top: 8, left: 6, dx: 30, dy: 20, dur: 17, delay: 0, ease: 'ease-in-out',
+    top: 8, left: 6, dx: 46, dy: 32, dur: 15, delay: 0, ease: 'ease-in-out',
     color: '#c9c2ea',
     poster: 'https://picsum.photos/seed/giulia-living/900/700',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
   },
   {
     id: 2,
-    size: 'md',
+    size: 'sm',
     title: 'Cocina contemporánea',
-    top: 14, left: 41, dx: 22, dy: 26, dur: 14, delay: 1.4, ease: 'cubic-bezier(.45,0,.55,1)',
+    top: 14, left: 41, dx: 34, dy: 40, dur: 12, delay: 1.4, ease: 'cubic-bezier(.45,0,.55,1)',
     color: '#f0c9c9',
     poster: 'https://picsum.photos/seed/giulia-kitchen/700/600',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
   },
   {
     id: 3,
-    size: 'sm',
+    size: 'md',
     title: 'Habitación principal',
-    top: 6, left: 76, dx: 18, dy: 24, dur: 12, delay: 0.7, ease: 'ease-in-out',
+    top: 6, left: 76, dx: 28, dy: 36, dur: 11, delay: 0.7, ease: 'ease-in-out',
     color: '#cfe8f2',
     poster: 'https://picsum.photos/seed/giulia-bedroom/700/600',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
@@ -36,7 +36,7 @@ const projects = [
     id: 4,
     size: 'md',
     title: 'Comedor',
-    top: 58, left: 9, dx: 24, dy: 18, dur: 16, delay: 2.1, ease: 'cubic-bezier(.37,0,.63,1)',
+    top: 58, left: 9, dx: 36, dy: 26, dur: 14, delay: 2.1, ease: 'cubic-bezier(.37,0,.63,1)',
     color: '#f5e8ad',
     poster: 'https://picsum.photos/seed/giulia-dining/900/700',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
@@ -45,7 +45,7 @@ const projects = [
     id: 5,
     size: 'lg',
     title: 'Oficina en casa',
-    top: 60, left: 40, dx: 20, dy: 22, dur: 18, delay: 0.9, ease: 'ease-in-out',
+    top: 60, left: 40, dx: 30, dy: 34, dur: 16, delay: 0.9, ease: 'ease-in-out',
     color: '#a9d2c4',
     poster: 'https://picsum.photos/seed/giulia-office/700/600',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
@@ -54,7 +54,7 @@ const projects = [
     id: 6,
     size: 'sm',
     title: 'Terraza',
-    top: 56, left: 78, dx: 16, dy: 20, dur: 13, delay: 1.7, ease: 'cubic-bezier(.45,0,.55,1)',
+    top: 56, left: 78, dx: 24, dy: 30, dur: 10, delay: 1.7, ease: 'cubic-bezier(.45,0,.55,1)',
     color: '#e6d6ee',
     poster: 'https://picsum.photos/seed/giulia-terrace/500/500',
     video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
@@ -145,8 +145,8 @@ function App() {
         ))}
       </main>
 
-      <a className="about-link" href="#about">
-        About me <i className="fa-solid fa-arrow-right"></i>
+      <a className="about-link" href="#contact">
+        Contact me <i className="fa-solid fa-arrow-right"></i>
       </a>
     </div>
   )
