@@ -106,16 +106,24 @@ body {
   object-fit: cover;
 }
 
-/* Project title, always visible, centered under the card. */
+/* Project title, hidden by default, revealed under the card on hover. */
 .card-title {
   display: block;
   margin-top: 8px;
   text-align: center;
   font-weight: 700;
   font-size: 12px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: #4a4a4a;
   white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.float-wrap:hover .card-title {
+  opacity: 1;
 }
 
 .contact-link {
