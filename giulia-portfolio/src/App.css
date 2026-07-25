@@ -6,6 +6,7 @@
 
 body {
   margin: 0;
+  overflow: hidden;
   background: #ffffff;
   /* Arimo es metric-compatible con Arial y visualmente muy cercana a
      Helvetica; es la alternativa gratuita mas parecida que hay para web. */
@@ -19,31 +20,26 @@ body {
   overflow: hidden;
 }
 
-/* "Giulia" background wordmark — stretched edge to edge. The SVG with
-   preserveAspectRatio="none" lets the word fill the full page width
-   regardless of the font's natural letter proportions. */
+/* "Giulia" background wordmark — big but keeping the font's natural
+   letter proportions (scaled via font-size, never stretched). */
 .watermark-layer {
   position: absolute;
-  top: 50%;
-  left: 63px;
-  right: 63px;
-  transform: translateY(-50%);
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 0;
   pointer-events: none;
 }
 
-.watermark-svg {
-  display: block;
-  width: 100%;
-  height: clamp(180px, 34vh, 420px);
-}
-
-.watermark-svg text {
+.watermark {
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
-  font-size: 300px;
-  fill: #e6e6e6;
+  font-size: clamp(160px, 26vw, 440px);
+  line-height: 1;
+  color: #e6e6e6;
   user-select: none;
+  white-space: nowrap;
 }
 
 .top-bar {
@@ -80,6 +76,8 @@ body {
 
 .card-tile {
   position: relative;
+  width: 300px;
+  height: 240px;
   border-radius: 6px;
   overflow: hidden;
   background-color: #d9d9d9;
@@ -87,10 +85,6 @@ body {
   transition: box-shadow 0.35s ease;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
-
-.card-tile.size-lg { width: 320px; height: 260px; }
-.card-tile.size-md { width: 240px; height: 200px; }
-.card-tile.size-sm { width: 180px; height: 160px; }
 
 /* Position/scale/rotation are all driven by JS on .float-wrap (see
    App.jsx) so the depth pulse and hover zoom don't fight each other. */
@@ -106,22 +100,31 @@ body {
   object-fit: cover;
 }
 
-/* Project title, hidden by default, revealed under the card on hover. */
+/* Project title, hidden by default, revealed under the card on hover.
+   It sits in a very high stacking layer so a card passing behind can never
+   cover it, and counter-scales visually by staying at a fixed font size. */
 .card-title {
-  display: block;
-  margin-top: 8px;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
   font-weight: 700;
   font-size: 12px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: #4a4a4a;
+  color: #333;
   white-space: nowrap;
   opacity: 0;
   transition: opacity 0.25s ease;
   pointer-events: none;
+  z-index: 1000;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
 }
 
+.card-tile:hover + .card-title,
 .float-wrap:hover .card-title {
   opacity: 1;
 }
@@ -141,6 +144,20 @@ body {
 
 .contact-link:hover {
   color: #7a7a7a;
+}
+
+/* Small hint so visitors know the wheel controls the depth. */
+.scroll-hint {
+  position: absolute;
+  bottom: 46px;
+  left: 63px;
+  z-index: 2;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #bdbdbd;
+  user-select: none;
 }
 
 @media (max-width: 768px) {
@@ -172,5 +189,8 @@ body {
   }
   .contact-link {
     right: 20px;
+  }
+  .scroll-hint {
+    display: none;
   }
 }
