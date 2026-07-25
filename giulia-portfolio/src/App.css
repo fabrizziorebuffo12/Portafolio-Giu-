@@ -19,24 +19,30 @@ body {
   overflow: hidden;
 }
 
-/* "Giulia" background wordmark — Helvetica/Arimo Regular */
+/* "Giulia" background wordmark — stretched edge to edge. The SVG with
+   preserveAspectRatio="none" lets the word fill the full page width
+   regardless of the font's natural letter proportions. */
 .watermark-layer {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute;
+  top: 50%;
+  left: 63px;
+  right: 63px;
+  transform: translateY(-50%);
   z-index: 0;
   pointer-events: none;
 }
 
-.watermark {
+.watermark-svg {
+  display: block;
+  width: 100%;
+  height: clamp(180px, 34vh, 420px);
+}
+
+.watermark-svg text {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 500;
-  font-size: clamp(140px, 20vw, 360px);
-  line-height: 1;
-  /* slightly darker than the original F2F2F2 so it holds its own against
-     the white background without competing with the cards */
-  color: #e6e6e6;
+  font-size: 240px;
+  fill: #e6e6e6;
   user-select: none;
 }
 
@@ -121,10 +127,12 @@ body {
   font-size: 14px;
 }
 
-.about-link {
+.contact-link {
   position: absolute;
   bottom: 46px;
-  right: 106px;
+  /* matches .giulia-page horizontal padding so it lines up exactly
+     with the xx2026 tag in the top bar */
+  right: 63px;
   z-index: 2;
   font-weight: 700;
   font-size: 24px;
@@ -132,13 +140,17 @@ body {
   text-decoration: none;
 }
 
-.about-link:hover {
+.contact-link:hover {
   color: #7a7a7a;
 }
 
 @media (max-width: 768px) {
   .giulia-page {
     padding: 24px 20px 60px;
+  }
+  .watermark-layer {
+    left: 20px;
+    right: 20px;
   }
   .float-zone {
     height: auto;
@@ -159,7 +171,7 @@ body {
     width: 100%;
     height: 220px;
   }
-  .about-link {
+  .contact-link {
     right: 20px;
   }
 }
