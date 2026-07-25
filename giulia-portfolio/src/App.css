@@ -64,10 +64,12 @@ body {
 
 .float-wrap {
   position: absolute;
-  will-change: transform, filter;
-  /* JS updates transform/filter/z-index every frame (see App.jsx). The
-     short transition here only smooths the hover in/out snap. */
-  transition: filter 0.25s ease;
+  top: 0;
+  left: 0;
+  will-change: transform, opacity, filter;
+  /* JS updates transform/opacity/filter/z-index every frame (see
+     App.jsx) using its own easing, so no CSS transition is layered on
+     top — that would double up and feel laggy. */
 }
 
 .card-tile {
