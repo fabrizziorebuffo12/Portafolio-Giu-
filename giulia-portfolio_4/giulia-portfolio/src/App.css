@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: #ffffff;
+  /* Arimo es metric-compatible con Arial y visualmente muy cercana a
+     Helvetica; es la alternativa gratuita mas parecida que hay para web. */
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.giulia-page {
+  position: relative;
+  min-height: 100vh;
+  padding: 40px 63px 80px;
+  overflow: hidden;
+}
+
+/* "Giulia" background wordmark — stretched edge to edge. The SVG with
+   preserveAspectRatio="none" lets the word fill the full page width
+   regardless of the font's natural letter proportions. */
+.watermark-layer {
+  position: absolute;
+  top: 50%;
+  left: 63px;
+  right: 63px;
+  transform: translateY(-50%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.watermark-svg {
+  display: block;
+  width: 100%;
+  height: clamp(180px, 34vh, 420px);
+}
+
+.watermark-svg text {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 300px;
+  fill: #e6e6e6;
+  user-select: none;
+}
+
+.top-bar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.tag {
+  font-weight: 700;
+  font-size: 18px;
+  color: #a5a5a5;
+}
+
+/* Zone where the 6 project cards float freely */
+.float-zone {
+  position: relative;
+  z-index: 2;
+  height: calc(100vh - 220px);
+  min-height: 520px;
+}
+
+.float-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform, opacity, filter;
+  /* JS updates transform/opacity/filter/z-index every frame (see
+     App.jsx) using its own easing, so no CSS transition is layered on
+     top — that would double up and feel laggy. */
+}
+
+.card-tile {
+  position: relative;
+  width: 240px;
+  height: 200px;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #d9d9d9;
+  cursor: pointer;
+  transition: box-shadow 0.35s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+/* Position/scale/rotation are all driven by JS on .float-wrap (see
+   App.jsx) so the depth pulse and hover zoom don't fight each other. */
+.card-tile.is-hovered {
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
+}
+
+.card-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Project title, hidden by default, revealed under the card on hover.
+   It sits in a very high stacking layer so a card passing behind can never
+   cover it, and counter-scales visually by staying at a fixed font size. */
+.card-title {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #333;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 1000;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+}
+
+.card-tile:hover + .card-title,
+.float-wrap:hover .card-title {
+  opacity: 1;
+}
+
+.contact-link {
+  position: absolute;
+  bottom: 46px;
+  /* matches .giulia-page horizontal padding so it lines up exactly
+     with the xx2026 tag in the top bar */
+  right: 63px;
+  z-index: 2;
+  font-weight: 700;
+  font-size: 24px;
+  color: #a5a5a5;
+  text-decoration: none;
+}
+
+.contact-link:hover {
+  color: #7a7a7a;
+}
+
+/* Small hint so visitors know the wheel controls the depth. */
+.scroll-hint {
+  position: absolute;
+  bottom: 46px;
+  left: 63px;
+  z-index: 2;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #bdbdbd;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .giulia-page {
+    padding: 24px 20px 60px;
+  }
+  .watermark-layer {
+    left: 20px;
+    right: 20px;
+  }
+  .float-zone {
+    height: auto;
+    min-height: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .float-wrap {
+    position: relative;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+  }
+  .card-tile.size-lg,
+  .card-tile.size-md,
+  .card-tile.size-sm {
+    width: 100%;
+    height: 220px;
+  }
+  .contact-link {
+    right: 20px;
+  }
+  .scroll-hint {
+    display: none;
+  }
+}
