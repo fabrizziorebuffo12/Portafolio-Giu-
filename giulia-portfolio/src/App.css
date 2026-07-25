@@ -40,8 +40,8 @@ body {
 
 .watermark-svg text {
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 500;
-  font-size: 240px;
+  font-weight: 700;
+  font-size: 300px;
   fill: #e6e6e6;
   user-select: none;
 }
@@ -106,25 +106,16 @@ body {
   object-fit: cover;
 }
 
-.card-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: flex-end;
-  padding: 14px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
-}
-
-.card-tile:hover .card-overlay {
-  opacity: 1;
-}
-
-.card-overlay span {
-  color: #ffffff;
+/* Project title, always visible, centered under the card. */
+.card-title {
+  display: block;
+  margin-top: 8px;
+  text-align: center;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 12px;
+  letter-spacing: 0.02em;
+  color: #4a4a4a;
+  white-space: nowrap;
 }
 
 .contact-link {

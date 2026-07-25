@@ -90,12 +90,13 @@ const HIDDEN_MAX = 4200
 const EXIT_MS = 1400
 const ENTER_MS = 1500
 
-// --- Depth: each time a card (re)enters, it's assigned a random base
-// scale so near (big) and far (small) cards coexist on screen at once —
-// this is the automatic "zoom" that replaces the reference's scroll. ---
-const DEPTH_MIN = 0.5   // farthest / smallest
-const DEPTH_MAX = 1.7   // nearest / biggest
-const HOVER_TARGET_SCALE = 1.5 // hovered card settles to this readable size
+// --- Depth: a subtle per-card size variation so the cards feel like
+// they float at slightly different distances, but all stay small and
+// fairly even in size (no giant/tiny extremes). Assigned fresh on each
+// re-entry so the mix gently reshuffles over time. ---
+const DEPTH_MIN = 0.85  // farthest / smallest
+const DEPTH_MAX = 1.15  // nearest / biggest
+const HOVER_TARGET_SCALE = 1.4 // hovered card settles to this readable size
 
 const POS_LERP = 0.055
 const SCALE_LERP = 0.09
@@ -176,7 +177,7 @@ function App() {
     // Initial placement: one card per slot, as authored, each with a
     // distinct starting depth so the first frame already shows variety.
     const r0 = rect()
-    const initialDepths = [1.6, 0.6, 1.15, 0.85, 1.4, 0.55]
+    const initialDepths = [1.1, 0.9, 1.05, 0.88, 1.12, 0.86]
     projects.forEach((p, i) => {
       const pt = slotPoint(p.slot, r0)
       cardState.current[p.id] = {
@@ -333,8 +334,9 @@ function App() {
           `translate3d(${(s.x - size.w / 2).toFixed(1)}px, ${(s.y - size.h / 2).toFixed(1)}px, 0) ` +
           `rotate(${s.rot.toFixed(2)}deg) scale(${s.scale.toFixed(3)})`
         el.style.opacity = s.opacity.toFixed(3)
-        // Far (small) cards get a soft focus; near (big) cards stay crisp.
-        const blurPx = isHovered ? 0 : Math.max(0, (1 - s.scale) * 5)
+        // Very light soft-focus on the smaller cards; sizes are close now
+        // so this stays subtle. Hovered card is always crisp.
+        const blurPx = isHovered ? 0 : Math.max(0, (1 - s.scale) * 3)
         el.style.filter = `blur(${blurPx.toFixed(2)}px)`
         el.style.zIndex = isHovered ? 999 : Math.round(s.scale * 100)
         el.style.pointerEvents = s.phase === 'float' ? 'auto' : 'none'
@@ -374,16 +376,23 @@ function App() {
 
   return (
     <div className="giulia-page">
-      {/* Stretched edge-to-edge wordmark. SVG lets the text fill the full
-          width regardless of the font's natural proportions. */}
+      {/* Edge-to-edge wordmark. textLength stretches the word to the full
+          width while keeping the real Arimo font shapes (preserveAspectRatio
+          "none" distorted the glyphs, which is what looked wrong before). */}
       <div className="watermark-layer">
         <svg
           className="watermark-svg"
-          viewBox="0 0 1000 260"
-          preserveAspectRatio="none"
+          viewBox="0 0 1200 300"
           aria-hidden="true"
         >
-          <text x="500" y="200" textAnchor="middle">Giulia</text>
+          <text
+            x="0"
+            y="235"
+            textLength="1200"
+            lengthAdjust="spacingAndGlyphs"
+          >
+            Giulia
+          </text>
         </svg>
       </div>
 
@@ -414,10 +423,9 @@ function App() {
                 playsInline
                 preload="metadata"
               />
-              <div className="card-overlay">
-                <span>{p.title}</span>
-              </div>
             </div>
+            {/* Title stays visible below the card at all times. */}
+            <span className="card-title">{p.title}</span>
           </div>
         ))}
       </main>
