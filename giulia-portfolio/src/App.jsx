@@ -39,33 +39,25 @@ const CARD_W = 300
 const CARD_H = 240
 
 // --- Gufram-style camera flythrough ---
-// Cards sit at FIXED positions in a 3D field (fixed angle out from center,
-// fixed lateral radius, fixed base depth spacing). A single shared "camera"
-// value moves forward through the field. Scrolling the wheel moves the
-// camera; it also drifts forward slowly on its own. Each card's apparent
-// depth = its base depth minus the camera position, wrapped into a fixed
-// range so the 6 cards loop endlessly (near -> pass -> respawn far).
-const DEPTH_SPAN = 9        // total depth range the field wraps over
-const Z_NEAR = 0.6          // closest before it has flown past the viewer
-const FOCAL = 4.2           // perspective focal length (bigger = cards read larger)
-const AUTO_SPEED = 0.35     // depth units/sec the camera drifts on its own
-const WHEEL_SENSITIVITY = 0.0016 // how much one wheel notch moves the camera
-const CAM_LERP = 0.08       // smooths scroll so it glides instead of jerks
-const HOVER_TARGET_SCALE = 1.6
-const HOVER_LERP = 0.14
+const DEPTH_SPAN = 9
+const Z_NEAR = 0.6
+const FOCAL = 5.6           // bigger => cards read larger overall
+const AUTO_SPEED = 0.35
+const WHEEL_SENSITIVITY = 0.0016
+const CAM_LERP = 0.08
+const HOVER_ZOOM = 1.3      // relative zoom on hover (multiplies current size)
+const HOVER_LERP = 0.1      // smoother, more gradual hover in/out
 
-// Fixed layout per card: spread around the circle, varied radius, evenly
-// spaced base depths, and a per-card size multiplier so the six cards are
-// visibly different sizes (not a uniform grid). No rotation — cards stay
-// upright.
-const CARD_SIZES = [1.25, 0.8, 1.0, 0.7, 1.15, 0.9]
+// Per-card size multipliers, arranged so no two neighbours share a size
+// class: L (large) / S (small) / M (medium) alternating around the ring.
+const CARD_SIZES = [1.55, 0.7, 1.05, 1.55, 0.7, 1.05]
 const layout = projects.map((p, i) => {
   const angle = (i / projects.length) * Math.PI * 2 + 0.5
   return {
     angle,
-    radius: 0.26 + (i % 3) * 0.14, // how far off-center it drifts out to
-    baseDepth: (i / projects.length) * DEPTH_SPAN, // staggered along Z
-    sizeMul: CARD_SIZES[i] ?? 1,   // individual size, keeps variety
+    radius: 0.26 + (i % 3) * 0.14,
+    baseDepth: (i / projects.length) * DEPTH_SPAN,
+    sizeMul: CARD_SIZES[i] ?? 1,
   }
 })
 
@@ -78,6 +70,7 @@ function App() {
   const camRef = useRef(0)        // eased camera position (actual)
   const camTargetRef = useRef(0)  // where the camera wants to be (scroll adds here)
   const hoverScales = useRef({})
+  const frozenZ = useRef({})
 
   useEffect(() => {
     const zone = zoneRef.current
@@ -119,8 +112,16 @@ function App() {
         const isHovered = hoveredIdRef.current === p.id
 
         // Apparent depth: fixed base minus camera, wrapped into [Z_NEAR, +span].
+        // When hovered, freeze the depth where it was so the card stops
+        // drifting toward/away and just holds still while you read it.
         let z = L.baseDepth - cam
         z = ((z - Z_NEAR) % DEPTH_SPAN + DEPTH_SPAN) % DEPTH_SPAN + Z_NEAR
+        if (isHovered) {
+          if (frozenZ.current[p.id] == null) frozenZ.current[p.id] = z
+          z = frozenZ.current[p.id]
+        } else {
+          frozenZ.current[p.id] = null
+        }
 
         const persp = FOCAL / z
         const baseScale = persp * 0.5 * L.sizeMul
@@ -128,10 +129,9 @@ function App() {
         const px = cx + Math.cos(L.angle) * dist
         const py = cy + Math.sin(L.angle) * dist
 
-        // Hover: settle to a readable, centered-ish size.
-        const targetHover = isHovered
-          ? HOVER_TARGET_SCALE / Math.max(baseScale, 0.001)
-          : 1
+        // Hover = a gentle RELATIVE zoom on top of whatever size the card
+        // already is (no jump to an absolute size), which reads as fluid.
+        const targetHover = isHovered ? HOVER_ZOOM : 1
         hoverScales.current[p.id] += (targetHover - hoverScales.current[p.id]) * HOVER_LERP
         const scale = baseScale * hoverScales.current[p.id]
 
@@ -150,6 +150,13 @@ function App() {
         el.style.opacity = opacity.toFixed(3)
         el.style.filter = isHovered ? 'none' : `blur(${Math.max(0, (0.55 - baseScale) * 3).toFixed(2)}px)`
         el.style.zIndex = isHovered ? 999 : Math.round(persp * 50)
+
+        // If the card sits low, put its (hover) title above it so the
+        // enlarged card never pushes the name off the bottom of the screen.
+        if (isHovered) {
+          const lowHalf = py > r.height * 0.6
+          el.classList.toggle('title-above', lowHalf)
+        }
       })
 
       raf = requestAnimationFrame(tick)

@@ -129,6 +129,12 @@ body {
   opacity: 1;
 }
 
+/* When the card is low on screen, its title flips to sit above it. */
+.float-wrap.title-above .card-title {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+
 .contact-link {
   position: absolute;
   bottom: 46px;
