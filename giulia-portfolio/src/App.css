@@ -8,20 +8,16 @@ body {
   margin: 0;
   overflow: hidden;
   background: #ffffff;
-  /* Arimo es metric-compatible con Arial y visualmente muy cercana a
-     Helvetica; es la alternativa gratuita mas parecida que hay para web. */
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .giulia-page {
   position: relative;
-  min-height: 100vh;
-  padding: 40px 63px 80px;
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
 }
 
-/* "Giulia" background wordmark — big but keeping the font's natural
-   letter proportions (scaled via font-size, never stretched). */
 .watermark-layer {
   position: absolute;
   inset: 0;
@@ -43,11 +39,10 @@ body {
 }
 
 .top-bar {
-  position: relative;
+  position: absolute;
+  top: 40px;
+  right: 63px;
   z-index: 2;
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 20px;
 }
 
 .tag {
@@ -56,12 +51,10 @@ body {
   color: #a5a5a5;
 }
 
-/* Zone where the 6 project cards float freely */
 .float-zone {
-  position: relative;
+  position: absolute;
+  inset: 0;
   z-index: 2;
-  height: calc(100vh - 220px);
-  min-height: 520px;
 }
 
 .float-wrap {
@@ -69,9 +62,6 @@ body {
   top: 0;
   left: 0;
   will-change: transform, opacity, filter;
-  /* JS updates transform/opacity/filter/z-index every frame (see
-     App.jsx) using its own easing, so no CSS transition is layered on
-     top — that would double up and feel laggy. */
 }
 
 .card-tile {
@@ -86,8 +76,6 @@ body {
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
-/* Position/scale/rotation are all driven by JS on .float-wrap (see
-   App.jsx) so the depth pulse and hover zoom don't fight each other. */
 .card-tile.is-hovered {
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.22);
 }
@@ -100,17 +88,22 @@ body {
   object-fit: cover;
 }
 
-/* Titles are positioned independently via JS (not inside float-wrap)
-   so they never scale with the card. */
+video::-webkit-media-controls,
+video::-webkit-media-controls-enclosure,
+video::-internal-media-controls-overflow-button,
+video::-webkit-media-controls-picture-in-picture-button {
+  display: none !important;
+}
+
 .card-title {
   position: absolute;
   transform: translateX(-50%);
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
-  font-size: 11px;
+  font-size: 14px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #555;
+  color: #222;
   text-shadow: 0 1px 4px rgba(255, 255, 255, 0.9);
   white-space: nowrap;
   pointer-events: none;
@@ -120,8 +113,6 @@ body {
 .contact-link {
   position: absolute;
   bottom: 46px;
-  /* matches .giulia-page horizontal padding so it lines up exactly
-     with the xx2026 tag in the top bar */
   right: 63px;
   z-index: 2;
   font-weight: 700;
@@ -134,20 +125,6 @@ body {
   color: #7a7a7a;
 }
 
-/* Small hint so visitors know the wheel controls the depth. */
-.scroll-hint {
-  position: absolute;
-  bottom: 46px;
-  left: 63px;
-  z-index: 2;
-  font-weight: 700;
-  font-size: 13px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #bdbdbd;
-  user-select: none;
-}
-
 @media (max-width: 768px) {
   .giulia-page {
     padding: 24px 20px 60px;
@@ -156,36 +133,7 @@ body {
     left: 20px;
     right: 20px;
   }
-  .float-zone {
-    height: auto;
-    min-height: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-  .float-wrap {
-    position: relative;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-  }
-  .card-tile.size-lg,
-  .card-tile.size-md,
-  .card-tile.size-sm {
-    width: 100%;
-    height: 220px;
-  }
   .contact-link {
     right: 20px;
   }
-  .scroll-hint {
-    display: none;
-  }
-}
-
-video::-webkit-media-controls {
-  display: none !important;
-}
-video::-webkit-media-controls-enclosure {
-  display: none !important;
 }

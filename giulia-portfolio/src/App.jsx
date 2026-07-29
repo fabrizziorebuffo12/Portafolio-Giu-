@@ -131,7 +131,6 @@ function App() {
           opacity = Math.min(fadeInFar, fadeOutEdge)
         }
 
-        // Card transform
         el.style.transform =
           `translate3d(${(px - CARD_W / 2).toFixed(1)}px, ${(py - CARD_H / 2).toFixed(1)}px, 0) ` +
           `scale(${scale.toFixed(3)})`
@@ -139,7 +138,6 @@ function App() {
         el.style.filter = isHovered ? 'none' : `blur(${Math.max(0, (0.55 - baseScale) * 3).toFixed(2)}px)`
         el.style.zIndex = isHovered ? 999 : Math.round(persp * 50)
 
-        // Title: positioned independently in px so it never scales with the card
         if (titleEl) {
           const titleY = py + (CARD_H / 2) * scale + 10
           titleEl.style.left = `${px.toFixed(1)}px`
@@ -212,13 +210,13 @@ function App() {
                 playsInline
                 preload="metadata"
                 disablePictureInPicture
+                controls={false}
                 controlsList="nodownload nofullscreen noremoteplayback"
               />
             </div>
           </div>
         ))}
 
-        {/* Titles live outside float-wrap so they never scale with the card */}
         {projects.map((p) => (
           <span
             key={`title-${p.id}`}
