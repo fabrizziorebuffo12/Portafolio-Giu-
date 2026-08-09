@@ -1,37 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-
-const projects = [
-  {
-    id: 1, title: 'Sala minimalista', color: '#c9c2ea',
-    poster: 'https://picsum.photos/seed/giulia-living/900/700',
-    video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-  },
-  {
-    id: 2, title: 'Cocina contemporánea', color: '#f0c9c9',
-    poster: 'https://picsum.photos/seed/giulia-kitchen/700/600',
-    video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-  },
-  {
-    id: 3, title: 'Habitación principal', color: '#cfe8f2',
-    poster: 'https://picsum.photos/seed/giulia-bedroom/700/600',
-    video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-  },
-  {
-    id: 4, title: 'Comedor', color: '#f5e8ad',
-    poster: 'https://picsum.photos/seed/giulia-dining/900/700',
-    video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-  },
-  {
-    id: 5, title: 'Oficina en casa', color: '#a9d2c4',
-    poster: 'https://picsum.photos/seed/giulia-office/700/600',
-    video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-  },
-  {
-    id: 6, title: 'Terraza', color: '#e6d6ee',
-    poster: 'https://picsum.photos/seed/giulia-terrace/500/500',
-    video: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-  },
-]
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import { projects } from './data/projects.js'
+import ProjectPage from './ProjectPage.jsx'
 
 const CARD_W = 300
 const CARD_H = 240
@@ -43,8 +13,8 @@ const WHEEL_SENSITIVITY = 0.0016
 const CAM_LERP = 0.08
 const HOVER_ZOOM = 1.3
 const HOVER_LERP = 0.1
-
 const CARD_SIZES = [1.55, 0.7, 1.05, 1.55, 0.7, 1.05]
+
 const layout = projects.map((p, i) => {
   const angle = (i / projects.length) * Math.PI * 2 + 0.5
   return {
@@ -55,26 +25,27 @@ const layout = projects.map((p, i) => {
   }
 })
 
-function App() {
-  const zoneRef = useRef(null)
-  const wrapRefs = useRef({})
-  const titleRefs = useRef({})
-  const videoRefs = useRef({})
-  const hoveredIdRef = useRef(null)
+function FloatingCards() {
+  const navigate   = useNavigate()
+  const zoneRef    = useRef(null)
+  const wrapRefs   = useRef({})
+  const titleRefs  = useRef({})
+  const videoRefs  = useRef({})
+  const hoveredIdRef   = useRef(null)
   const [hoveredId, setHoveredId] = useState(null)
-  const camRef = useRef(0)
-  const camTargetRef = useRef(0)
-  const hoverScales = useRef({})
-  const frozenZ = useRef({})
+  const camRef         = useRef(0)
+  const camTargetRef   = useRef(0)
+  const hoverScales    = useRef({})
+  const frozenZ        = useRef({})
 
   useEffect(() => {
     const zone = zoneRef.current
     if (!zone) return
     const rect = () => zone.getBoundingClientRect()
 
-    projects.forEach((p) => { hoverScales.current[p.id] = 1 })
+    projects.forEach(p => { hoverScales.current[p.id] = 1 })
 
-    const onWheel = (e) => {
+    const onWheel = e => {
       e.preventDefault()
       camTargetRef.current += e.deltaY * WHEEL_SENSITIVITY
     }
@@ -83,23 +54,22 @@ function App() {
     let raf
     let last = performance.now()
 
-    const tick = (now) => {
-      const dt = Math.min(0.05, (now - last) / 1000)
+    const tick = now => {
+      const dt  = Math.min(0.05, (now - last) / 1000)
       last = now
-      const r = rect()
-      const cx = r.width / 2
-      const cy = r.height / 2
+      const r   = rect()
+      const cx  = r.width / 2
+      const cy  = r.height / 2
       const halfDiag = Math.hypot(r.width, r.height) / 2
 
-      const anyHover = hoveredIdRef.current !== null
-      if (!anyHover) camTargetRef.current += AUTO_SPEED * dt
+      if (!hoveredIdRef.current) camTargetRef.current += AUTO_SPEED * dt
       camRef.current += (camTargetRef.current - camRef.current) * CAM_LERP
       const cam = camRef.current
 
       projects.forEach((p, i) => {
-        const el = wrapRefs.current[p.id]
+        const el      = wrapRefs.current[p.id]
         const titleEl = titleRefs.current[p.id]
-        const L = layout[i]
+        const L       = layout[i]
         if (!el) return
 
         const isHovered = hoveredIdRef.current === p.id
@@ -113,11 +83,11 @@ function App() {
           frozenZ.current[p.id] = null
         }
 
-        const persp = FOCAL / z
+        const persp     = FOCAL / z
         const baseScale = persp * 0.5 * L.sizeMul
-        const dist = L.radius * halfDiag * persp
-        const px = cx + Math.cos(L.angle) * dist
-        const py = cy + Math.sin(L.angle) * dist
+        const dist      = L.radius * halfDiag * persp
+        const px        = cx + Math.cos(L.angle) * dist
+        const py        = cy + Math.sin(L.angle) * dist
 
         const targetHover = isHovered ? HOVER_ZOOM : 1
         hoverScales.current[p.id] += (targetHover - hoverScales.current[p.id]) * HOVER_LERP
@@ -125,25 +95,23 @@ function App() {
 
         let opacity = 1
         if (!isHovered) {
-          const fadeInFar = Math.min(1, (DEPTH_SPAN + Z_NEAR - z) / 3)
-          const edge = Math.min(px, r.width - px, py, r.height - py)
+          const fadeInFar   = Math.min(1, (DEPTH_SPAN + Z_NEAR - z) / 3)
+          const edge        = Math.min(px, r.width - px, py, r.height - py)
           const fadeOutEdge = Math.max(0, Math.min(1, (edge + CARD_W * scale * 0.3) / (CARD_W * scale * 0.5 + 90)))
           opacity = Math.min(fadeInFar, fadeOutEdge)
         }
 
-        el.style.transform =
-          `translate3d(${(px - CARD_W / 2).toFixed(1)}px, ${(py - CARD_H / 2).toFixed(1)}px, 0) ` +
-          `scale(${scale.toFixed(3)})`
-        el.style.opacity = opacity.toFixed(3)
-        el.style.filter = isHovered ? 'none' : `blur(${Math.max(0, (0.55 - baseScale) * 3).toFixed(2)}px)`
-        el.style.zIndex = isHovered ? 999 : Math.round(persp * 50)
+        el.style.transform = `translate3d(${(px - CARD_W/2).toFixed(1)}px,${(py - CARD_H/2).toFixed(1)}px,0) scale(${scale.toFixed(3)})`
+        el.style.opacity   = opacity.toFixed(3)
+        el.style.filter    = isHovered ? 'none' : `blur(${Math.max(0,(0.55-baseScale)*3).toFixed(2)}px)`
+        el.style.zIndex    = isHovered ? 999 : Math.round(persp * 50)
 
         if (titleEl) {
-          const titleY = py + (CARD_H / 2) * scale + 10
-          titleEl.style.left = `${px.toFixed(1)}px`
-          titleEl.style.top = `${titleY.toFixed(1)}px`
+          const titleY = py + (CARD_H/2) * scale + 10
+          titleEl.style.left    = `${px.toFixed(1)}px`
+          titleEl.style.top     = `${titleY.toFixed(1)}px`
           titleEl.style.opacity = opacity.toFixed(3)
-          titleEl.style.zIndex = isHovered ? 1000 : Math.round(persp * 50)
+          titleEl.style.zIndex  = isHovered ? 1000 : Math.round(persp * 50)
         }
       })
 
@@ -157,24 +125,23 @@ function App() {
     }
   }, [])
 
-  const handleEnter = (id) => {
+  const handleEnter = id => {
     hoveredIdRef.current = id
     setHoveredId(id)
     const v = videoRefs.current[id]
-    if (v) {
-      v.currentTime = 0
-      v.play().catch(() => {})
-    }
+    if (v) { v.currentTime = 0; v.play().catch(() => {}) }
   }
 
-  const handleLeave = (id) => {
+  const handleLeave = id => {
     hoveredIdRef.current = null
     setHoveredId(null)
     const v = videoRefs.current[id]
-    if (v) {
-      v.pause()
-      v.currentTime = 0
-    }
+    if (v) { v.pause(); v.currentTime = 0 }
+  }
+
+  const handleClick = id => {
+    const p = projects.find(x => x.id === id)
+    if (p) navigate(`/proyecto/${p.slug}`)
   }
 
   return (
@@ -188,27 +155,25 @@ function App() {
       </header>
 
       <main className="float-zone" ref={zoneRef}>
-        {projects.map((p) => (
+        {projects.map((p, i) => (
           <div
             key={p.id}
-            ref={(el) => (wrapRefs.current[p.id] = el)}
+            ref={el => (wrapRefs.current[p.id] = el)}
             className="float-wrap"
           >
             <div
-              className={`card-tile ${hoveredId === p.id ? 'is-hovered' : ''}`}
-              style={{ backgroundColor: p.color }}
+              className={`card-tile${hoveredId === p.id ? ' is-hovered' : ''}`}
+              style={{ backgroundColor: ['#c9c2ea','#f0c9c9','#cfe8f2','#f5e8ad','#a9d2c4','#e6d6ee'][i] }}
               onMouseEnter={() => handleEnter(p.id)}
               onMouseLeave={() => handleLeave(p.id)}
+              onClick={() => handleClick(p.id)}
             >
               <video
-                ref={(el) => (videoRefs.current[p.id] = el)}
+                ref={el => (videoRefs.current[p.id] = el)}
                 className="card-video"
-                src={p.video}
-                poster={p.poster}
-                muted
-                loop
-                playsInline
-                preload="metadata"
+                src={p.renders[0]}
+                poster={p.renders[0]}
+                muted loop playsInline preload="metadata"
                 disablePictureInPicture
                 controls={false}
                 controlsList="nodownload nofullscreen noremoteplayback"
@@ -217,13 +182,13 @@ function App() {
           </div>
         ))}
 
-        {projects.map((p) => (
+        {projects.map(p => (
           <span
             key={`title-${p.id}`}
-            ref={(el) => (titleRefs.current[p.id] = el)}
+            ref={el => (titleRefs.current[p.id] = el)}
             className="card-title"
           >
-            {p.title.toUpperCase()}
+            {p.title}
           </span>
         ))}
       </main>
@@ -233,4 +198,11 @@ function App() {
   )
 }
 
-export default App
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<FloatingCards />} />
+      <Route path="/proyecto/:slug" element={<ProjectPage />} />
+    </Routes>
+  )
+}

@@ -1,0 +1,251 @@
+.project-page {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.project-page.visible {
+  opacity: 1;
+}
+
+/* Header */
+.project-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 28px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  z-index: 10;
+}
+
+.project-home-link {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(18px, 2.5vw, 26px);
+  color: #c8c8c8;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+}
+
+.project-home-link:hover {
+  color: #999;
+}
+
+.project-tag {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  color: #a5a5a5;
+}
+
+/* Main area */
+.project-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 80px 0 80px;
+  position: relative;
+}
+
+/* Description + nav row above carousel */
+.project-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 40px;
+  margin-bottom: 18px;
+}
+
+.project-description {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: clamp(11px, 1.1vw, 13px);
+  font-weight: 400;
+  color: #444;
+  line-height: 1.6;
+  max-width: 340px;
+  letter-spacing: 0.01em;
+}
+
+.project-description strong {
+  display: block;
+  font-weight: 700;
+  font-size: clamp(12px, 1.2vw, 14px);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #222;
+  margin-bottom: 6px;
+}
+
+.project-nav-arrows {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.project-nav-arrows button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 22px;
+  color: #bbb;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+
+.project-nav-arrows button:hover {
+  color: #333;
+}
+
+.project-counter {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #bbb;
+  text-transform: uppercase;
+}
+
+/* Carousel */
+.carousel-track-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  cursor: none;
+}
+
+.carousel-track {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  transition: none;
+}
+
+.carousel-slide {
+  flex-shrink: 0;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.5s ease,
+              filter 0.5s ease;
+}
+
+.carousel-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 2px;
+}
+
+/* Side slides (ears) */
+.carousel-slide.side {
+  opacity: 0.5;
+  filter: grayscale(20%);
+  cursor: pointer;
+}
+
+.carousel-slide.side:hover {
+  opacity: 0.7;
+}
+
+/* Center slide */
+.carousel-slide.center {
+  opacity: 1;
+  z-index: 2;
+}
+
+.carousel-slide.center.zoomed {
+  transform: scale(1.06);
+  z-index: 3;
+}
+
+/* Hide ears when center is zoomed */
+.carousel-track-wrap.zoomed .carousel-slide.side {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Indicators */
+.project-indicators {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.project-indicators span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #ddd;
+  transition: background 0.3s ease, width 0.3s ease;
+  border-radius: 1px;
+}
+
+.project-indicators span.active {
+  background: #333;
+  width: 32px;
+}
+
+/* Footer */
+.project-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0 40px 32px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.project-contact-link {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 24px;
+  color: #a5a5a5;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.project-contact-link:hover {
+  color: #7a7a7a;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .project-header {
+    padding: 20px 24px;
+  }
+
+  .project-meta {
+    padding: 0 24px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .project-description {
+    max-width: 100%;
+  }
+
+  .project-footer {
+    padding: 0 24px 24px;
+  }
+
+  .project-contact-link {
+    font-size: 18px;
+  }
+}
