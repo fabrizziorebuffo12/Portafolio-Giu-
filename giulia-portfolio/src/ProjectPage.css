@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;700&display=swap');
+
 .project-page {
   position: fixed;
   inset: 0;
@@ -6,7 +8,8 @@
   display: flex;
   flex-direction: column;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 .project-page.visible {
@@ -23,229 +26,261 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  z-index: 10;
+  z-index: 20;
 }
 
 .project-home-link {
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
-  font-size: clamp(18px, 2.5vw, 26px);
+  font-size: clamp(16px, 2vw, 22px);
   color: #c8c8c8;
   text-decoration: none;
   letter-spacing: 0.02em;
   transition: color 0.2s ease;
 }
 
-.project-home-link:hover {
-  color: #999;
+.project-home-link:hover { color: #999; }
+
+/* Right side of header: tag + project counter stacked */
+.project-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
 }
 
 .project-tag {
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
   color: #a5a5a5;
-}
-
-/* Main area */
-.project-main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 80px 0 80px;
-  position: relative;
-}
-
-/* Description + nav row above carousel */
-.project-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  padding: 0 40px;
-  margin-bottom: 18px;
-}
-
-.project-description {
-  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: clamp(11px, 1.1vw, 13px);
-  font-weight: 400;
-  color: #444;
-  line-height: 1.6;
-  max-width: 340px;
-  letter-spacing: 0.01em;
-}
-
-.project-description strong {
-  display: block;
-  font-weight: 700;
-  font-size: clamp(12px, 1.2vw, 14px);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: #222;
-  margin-bottom: 6px;
-}
-
-.project-nav-arrows {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.project-nav-arrows button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 22px;
-  color: #bbb;
-  padding: 4px 8px;
-  transition: color 0.2s ease;
-  line-height: 1;
-}
-
-.project-nav-arrows button:hover {
-  color: #333;
 }
 
 .project-counter {
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
+  font-size: 11px;
   letter-spacing: 0.1em;
-  color: #bbb;
+  color: #ccc;
+}
+
+/* Description */
+.project-description-block {
+  position: absolute;
+  top: 92px;
+  left: 0;
+  max-width: 320px;
+  z-index: 15;
+  padding: 12px 40px 20px 40px;
+  background: linear-gradient(
+    to right,
+    rgba(255,255,255,0.94) 0%,
+    rgba(255,255,255,0.75) 55%,
+    rgba(255,255,255,0) 100%
+  );
+}
+
+.project-title {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  color: #222;
+  margin: 0 0 8px 0;
+}
+
+.project-description {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: #666;
+  line-height: 1.75;
+  margin: 0;
+  letter-spacing: 0.01em;
 }
 
 /* Carousel */
-.carousel-track-wrap {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  cursor: none;
+.carousel-outer {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-41%);
+  z-index: 10;
 }
 
-.carousel-track {
+.carousel-stage {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  transition: none;
+  perspective: 900px;
 }
 
 .carousel-slide {
   flex-shrink: 0;
+  overflow: hidden;
   position: relative;
-  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              opacity 0.5s ease,
-              filter 0.5s ease;
 }
 
-.carousel-slide img {
-  display: block;
+/* Left ear */
+.carousel-slide.left-ear {
+  transform-origin: right center;
+  transform: rotateY(55deg);
+  opacity: 0.42;
+  cursor: pointer;
+  transition:
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity   0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset -8px 0 16px rgba(0,0,0,0.08);
+}
+
+/* Right ear */
+.carousel-slide.right-ear {
+  transform-origin: left center;
+  transform: rotateY(-55deg);
+  opacity: 0.42;
+  cursor: pointer;
+  transition:
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity   0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 8px 0 16px rgba(0,0,0,0.08);
+}
+
+/* Center */
+.carousel-slide.center-slide {
+  cursor: e-resize;
+  z-index: 2;
+  border-radius: 2px;
+  transition:
+    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+}
+
+.carousel-slide.center-slide.cursor-left {
+  cursor: w-resize;
+}
+
+/* Hover — unfold with delay so accidental hovers don't trigger */
+.carousel-stage.hovered .left-ear {
+  transform: rotateY(0deg);
+  opacity: 0.62;
+  transition-delay: 80ms;
+}
+
+.carousel-stage.hovered .right-ear {
+  transform: rotateY(0deg);
+  opacity: 0.62;
+  transition-delay: 80ms;
+}
+
+.carousel-stage.hovered .center-slide {
+  transform: scale(1.03);
+  box-shadow: 0 24px 64px rgba(0,0,0,0.10);
+  transition-delay: 80ms;
+}
+
+/* Fade images */
+.img-fade {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 2px;
-}
-
-/* Side slides (ears) */
-.carousel-slide.side {
-  opacity: 0.5;
-  filter: grayscale(20%);
-  cursor: pointer;
-}
-
-.carousel-slide.side:hover {
-  opacity: 0.7;
-}
-
-/* Center slide */
-.carousel-slide.center {
-  opacity: 1;
-  z-index: 2;
-}
-
-.carousel-slide.center.zoomed {
-  transform: scale(1.06);
-  z-index: 3;
-}
-
-/* Hide ears when center is zoomed */
-.carousel-track-wrap.zoomed .carousel-slide.side {
-  opacity: 0;
+  user-select: none;
+  -webkit-user-drag: none;
   pointer-events: none;
+  transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.img-fade.entering { opacity: 1; }
+.img-fade.leaving  { opacity: 0; }
+
+/* Bottom bar */
+.project-bottom {
+  position: absolute;
+  bottom: 32px;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  z-index: 20;
 }
 
 /* Indicators */
 .project-indicators {
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 5px;
 }
 
 .project-indicators span {
   display: block;
-  width: 24px;
   height: 2px;
+  width: 14px;
   background: #ddd;
-  transition: background 0.3s ease, width 0.3s ease;
   border-radius: 1px;
+  transition: background 0.3s ease, width 0.3s ease;
+  cursor: pointer;
 }
 
 .project-indicators span.active {
   background: #333;
-  width: 32px;
+  width: 22px;
 }
 
-/* Footer */
-.project-footer {
+/* Project nav arrows — centered under the image via JS */
+.project-nav-left,
+.project-nav-right {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0 40px 32px;
-  display: flex;
-  justify-content: flex-end;
+  bottom: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ccc;
+  padding: 6px 10px;
+  transition: color 0.2s ease;
+  line-height: 1;
+  z-index: 20;
+  transform: translateX(-50%);
 }
+
+.project-nav-left:hover,
+.project-nav-right:hover { color: #333; }
 
 .project-contact-link {
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
-  font-size: 24px;
+  font-size: 20px;
   color: #a5a5a5;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-.project-contact-link:hover {
-  color: #7a7a7a;
-}
+.project-contact-link:hover { color: #7a7a7a; }
 
 /* Mobile */
 @media (max-width: 768px) {
-  .project-header {
-    padding: 20px 24px;
-  }
+  .project-header { padding: 20px 24px; }
 
-  .project-meta {
-    padding: 0 24px;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
-
-  .project-description {
+  .project-description-block {
+    top: 72px;
     max-width: 100%;
+    padding: 10px 24px 16px;
   }
 
-  .project-footer {
-    padding: 0 24px 24px;
+  .carousel-slide.left-ear,
+  .carousel-slide.right-ear {
+    transform: rotateY(0deg) !important;
+    opacity: 0.45;
+    transition-delay: 0ms !important;
   }
 
-  .project-contact-link {
-    font-size: 18px;
-  }
+  .project-bottom { padding: 0 24px; bottom: 20px; }
+  .project-contact-link { font-size: 16px; }
 }
