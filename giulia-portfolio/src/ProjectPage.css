@@ -16,7 +16,6 @@
   opacity: 1;
 }
 
-/* Header */
 .project-header {
   position: absolute;
   top: 0;
@@ -41,14 +40,6 @@
 
 .project-home-link:hover { color: #999; }
 
-/* Right side of header: tag + project counter stacked */
-.project-header-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-}
-
 .project-tag {
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
@@ -56,15 +47,6 @@
   color: #a5a5a5;
 }
 
-.project-counter {
-  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  font-weight: 400;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: #ccc;
-}
-
-/* Description */
 .project-description-block {
   position: absolute;
   top: 92px;
@@ -100,7 +82,6 @@
   letter-spacing: 0.01em;
 }
 
-/* Carousel */
 .carousel-outer {
   position: absolute;
   top: 50%;
@@ -121,67 +102,43 @@
   flex-shrink: 0;
   overflow: hidden;
   position: relative;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Left ear */
 .carousel-slide.left-ear {
   transform-origin: right center;
   transform: rotateY(55deg);
-  opacity: 0.42;
-  cursor: pointer;
-  transition:
-    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity   0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.5;
   box-shadow: inset -8px 0 16px rgba(0,0,0,0.08);
 }
 
-/* Right ear */
 .carousel-slide.right-ear {
   transform-origin: left center;
   transform: rotateY(-55deg);
-  opacity: 0.42;
-  cursor: pointer;
-  transition:
-    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity   0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0.5;
   box-shadow: inset 8px 0 16px rgba(0,0,0,0.08);
 }
 
-/* Center */
 .carousel-slide.center-slide {
-  cursor: e-resize;
   z-index: 2;
   border-radius: 2px;
   transition:
-    transform 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   transform: scale(1);
 }
 
-.carousel-slide.center-slide.cursor-left {
-  cursor: w-resize;
-}
-
-/* Hover — unfold with delay so accidental hovers don't trigger */
-.carousel-stage.hovered .left-ear {
-  transform: rotateY(0deg);
-  opacity: 0.62;
-  transition-delay: 80ms;
-}
-
+.carousel-stage.hovered .left-ear,
 .carousel-stage.hovered .right-ear {
-  transform: rotateY(0deg);
-  opacity: 0.62;
-  transition-delay: 80ms;
+  opacity: 0;
 }
 
 .carousel-stage.hovered .center-slide {
-  transform: scale(1.03);
-  box-shadow: 0 24px 64px rgba(0,0,0,0.10);
-  transition-delay: 80ms;
+  transform: scale(1.22);
+  z-index: 5;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.14);
 }
 
-/* Fade images */
 .img-fade {
   position: absolute;
   inset: 0;
@@ -197,7 +154,6 @@
 .img-fade.entering { opacity: 1; }
 .img-fade.leaving  { opacity: 0; }
 
-/* Bottom bar */
 .project-bottom {
   position: absolute;
   bottom: 32px;
@@ -205,53 +161,10 @@
   right: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 0 40px;
   z-index: 20;
 }
-
-/* Indicators */
-.project-indicators {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.project-indicators span {
-  display: block;
-  height: 2px;
-  width: 14px;
-  background: #ddd;
-  border-radius: 1px;
-  transition: background 0.3s ease, width 0.3s ease;
-  cursor: pointer;
-}
-
-.project-indicators span.active {
-  background: #333;
-  width: 22px;
-}
-
-/* Project nav arrows — centered under the image via JS */
-.project-nav-left,
-.project-nav-right {
-  position: absolute;
-  bottom: 28px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ccc;
-  padding: 6px 10px;
-  transition: color 0.2s ease;
-  line-height: 1;
-  z-index: 20;
-  transform: translateX(-50%);
-}
-
-.project-nav-left:hover,
-.project-nav-right:hover { color: #333; }
 
 .project-contact-link {
   font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -264,7 +177,6 @@
 
 .project-contact-link:hover { color: #7a7a7a; }
 
-/* Mobile */
 @media (max-width: 768px) {
   .project-header { padding: 20px 24px; }
 
@@ -277,8 +189,7 @@
   .carousel-slide.left-ear,
   .carousel-slide.right-ear {
     transform: rotateY(0deg) !important;
-    opacity: 0.45;
-    transition-delay: 0ms !important;
+    opacity: 0.4;
   }
 
   .project-bottom { padding: 0 24px; bottom: 20px; }
