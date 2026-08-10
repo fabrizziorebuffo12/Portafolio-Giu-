@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { projects } from './data/projects.js'
 import './ProjectPage.css'
 
-const SLIDE_INTERVAL = 4500
+const SLIDE_INTERVAL = 3000
 
 export default function ProjectPage() {
   const { slug } = useParams()
@@ -36,8 +36,7 @@ export default function ProjectPage() {
   }, [])
 
   const total = project.renders.length
-  const prevIdx = (renderIdx - 1 + total) % total
-  const nextIdx = (renderIdx + 1) % total
+  const rendersFull = project.rendersFull ?? project.renders
 
   const goTo = useCallback((nextI) => {
     if (fadingRef.current || nextI === renderIdx) return
@@ -47,7 +46,7 @@ export default function ProjectPage() {
     setTimeout(() => {
       setPrevRenderIdx(null)
       fadingRef.current = false
-    }, 450)
+    }, 800)
   }, [renderIdx])
 
   const nextRender = useCallback(() => goTo((renderIdx + 1) % total), [goTo, renderIdx, total])
@@ -60,9 +59,7 @@ export default function ProjectPage() {
 
   const isMobile = vw < 768
   const centerW = Math.round(vw * (isMobile ? 0.72 : 0.46))
-  const earW = Math.round(vw * (isMobile ? 0.04 : 0.07))
   const centerH = Math.round(Math.min(centerW * 0.66, vh * 0.5))
-  const earH = Math.round(centerH * 0.85)
 
   const pageC = visible ? 'project-page visible' : 'project-page'
   const stageC = hovered ? 'carousel-stage hovered' : 'carousel-stage'
@@ -91,19 +88,29 @@ export default function ProjectPage() {
         onMouseLeave={() => setHovered(false)}
       >
         <div className={stageC}>
-          <div className="carousel-slide left-ear" style={{ width: earW, height: earH }}>
-            <img className="img-fade entering" src={project.renders[prevIdx]} alt="" draggable="false" />
-          </div>
-
           <div className="carousel-slide center-slide" style={{ width: centerW, height: centerH }}>
-            <img key={renderIdx} className="img-fade entering" src={project.renders[renderIdx]} alt={project.title} draggable="false" />
+            <img
+              key={'framed-' + renderIdx}
+              className="img-fade framed-layer entering"
+              src={project.renders[renderIdx]}
+              alt={project.title}
+              draggable="false"
+            />
             {prevRenderIdx !== null && (
-              <img key={'prev-' + prevRenderIdx} className="img-fade leaving" src={project.renders[prevRenderIdx]} alt="" draggable="false" />
+              <img
+                key={'framed-prev-' + prevRenderIdx}
+                className="img-fade framed-layer leaving"
+                src={project.renders[prevRenderIdx]}
+                alt=""
+                draggable="false"
+              />
             )}
-          </div>
-
-          <div className="carousel-slide right-ear" style={{ width: earW, height: earH }}>
-            <img className="img-fade entering" src={project.renders[nextIdx]} alt="" draggable="false" />
+            <img
+              className="img-fade full-layer"
+              src={rendersFull[renderIdx]}
+              alt={project.title}
+              draggable="false"
+            />
           </div>
         </div>
       </div>
