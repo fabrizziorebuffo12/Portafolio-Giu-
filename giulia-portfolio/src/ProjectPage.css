@@ -99,14 +99,10 @@
 .carousel-slide.center-slide {
   z-index: 2;
   border-radius: 2px;
-  transition:
-    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  transform: scale(1);
+  transition: box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .carousel-stage.hovered .center-slide {
-  transform: scale(1.22);
   box-shadow: 0 24px 64px rgba(0,0,0,0.14);
 }
 
@@ -119,7 +115,14 @@
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
-  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: scale(1);
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-stage.hovered .img-fade {
+  transform: scale(1.15);
 }
 
 .img-fade.entering { opacity: 1; }
