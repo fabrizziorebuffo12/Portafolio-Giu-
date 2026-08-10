@@ -116,7 +116,7 @@ export default function ProjectPage() {
       </div>
 
       <div className="project-bottom">
-        <a className="project-contact-link" href="#contact">Contact me</a>
+        <a className="project-contact-link" href="/contact" onClick={(e) => { e.preventDefault(); navigate('/contact') }}>Contact me</a>
       </div>
     </div>
   )

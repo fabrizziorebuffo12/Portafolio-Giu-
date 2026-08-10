@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Arimo:wght@400;700&display=swap');
+
+.contact-page {
+  position: fixed;
+  inset: 0;
+  background: #fff;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.contact-page.visible {
+  opacity: 1;
+}
+
+.watermark-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.watermark {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(160px, 26vw, 440px);
+  line-height: 1;
+  color: #e6e6e6;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.contact-info {
+  position: absolute;
+  top: 44%;
+  left: 54%;
+  z-index: 2;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 14px;
+  color: #000;
+}
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+  gap: 70px;
+  margin: 0 0 6px 0;
+  white-space: nowrap;
+}
+
+.info-row:last-child span:last-child {
+  margin-left: 40px;
+}
+
+.contact-block {
+  position: absolute;
+  top: 66%;
+  left: 26%;
+  z-index: 2;
+  font-family: 'Roboto Mono', 'Courier New', monospace;
+  font-size: 14px;
+  color: #000;
+}
+
+.contact-label {
+  margin: 0;
+}
+
+.contact-value {
+  margin: 6px 0 0 0;
+  padding-left: 40px;
+}
+
+@media (max-width: 768px) {
+  .contact-info {
+    top: 40%;
+    left: 8%;
+    font-size: 12px;
+  }
+  .info-row {
+    gap: 30px;
+  }
+  .contact-block {
+    top: 60%;
+    left: 8%;
+    font-size: 12px;
+  }
+}
+
+.contact-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 28px 40px;
+  z-index: 20;
+}
+
+.contact-home-link {
+  font-family: 'Arimo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: 700;
+  font-size: clamp(16px, 2vw, 22px);
+  color: #c8c8c8;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease;
+}
+
+.contact-home-link:hover { color: #999; }

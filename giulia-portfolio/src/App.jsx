@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import { projects } from './data/projects.js'
 import ProjectPage from './ProjectPage.jsx'
+import ContactPage from './ContactPage.jsx'
 
 const CARD_W = 300
 const CARD_H = 240
@@ -193,7 +194,13 @@ function FloatingCards() {
         ))}
       </main>
 
-      <a className="contact-link" href="#contact">Contact me</a>
+      <a
+        className="contact-link"
+        href="/contact"
+        onClick={e => { e.preventDefault(); navigate('/contact') }}
+      >
+        Contact me
+      </a>
     </div>
   )
 }
@@ -203,6 +210,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<FloatingCards />} />
       <Route path="/proyecto/:slug" element={<ProjectPage />} />
+      <Route path="/contact" element={<ContactPage />} />
     </Routes>
   )
 }
