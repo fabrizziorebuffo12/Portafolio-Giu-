@@ -59,7 +59,8 @@ export default function ProjectPage() {
 
   const isMobile = vw < 768
   const centerW = Math.round(vw * (isMobile ? 0.72 : 0.46))
-  const centerH = Math.round(Math.min(centerW * 0.66, vh * 0.5))
+  const centerH = Math.round(Math.min(centerW * 0.85, vh * 0.62))
+  const imageLeft = Math.round((vw - centerW) / 2)
 
   const pageC = visible ? 'project-page visible' : 'project-page'
   const stageC = hovered ? 'carousel-stage hovered' : 'carousel-stage'
@@ -77,7 +78,7 @@ export default function ProjectPage() {
         <span className="project-tag">xx2026</span>
       </header>
 
-      <div className="project-description-block">
+      <div className="project-description-block" style={{ left: imageLeft }}>
         <p className="project-title">{project.title}</p>
         <p className="project-description">{project.description}</p>
       </div>
@@ -116,7 +117,13 @@ export default function ProjectPage() {
       </div>
 
       <div className="project-bottom">
-        <a className="project-contact-link" href="/contact" onClick={(e) => { e.preventDefault(); navigate('/contact') }}>Contact me</a>
+        <a
+          className="project-contact-link"
+          href="/contact"
+          onClick={(e) => { e.preventDefault(); navigate('/contact') }}
+        >
+          Contact me
+        </a>
       </div>
     </div>
   )

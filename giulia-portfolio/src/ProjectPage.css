@@ -50,10 +50,9 @@
 .project-description-block {
   position: absolute;
   top: 92px;
-  left: 0;
-  max-width: 320px;
   z-index: 15;
-  padding: 12px 40px 20px 40px;
+  max-width: 320px;
+  transition: left 0.2s ease;
 }
 
 .project-title {
@@ -168,7 +167,6 @@
   .project-description-block {
     top: 72px;
     max-width: 100%;
-    padding: 10px 24px 16px;
   }
 
   .project-bottom { padding: 0 24px; bottom: 20px; }
